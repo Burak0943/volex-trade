@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Volex Trade - Global Markets",
+  title: "ChartFlow - Professional Trading",
   description: "Advanced trading platform for global markets.",
 };
 

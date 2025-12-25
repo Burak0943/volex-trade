@@ -4,6 +4,7 @@ import OrderForm from "@/components/dashboard/OrderForm";
 import PositionsTable from "@/components/dashboard/PositionsTable";
 import TradeHistory from "@/components/dashboard/TradeHistory";
 import BottomPanel from "@/components/dashboard/BottomPanel";
+import Watchlist from "@/components/dashboard/Watchlist";
 import { generateCandleData } from "@/utils/marketData";
 
 export default async function DashboardPage() {
@@ -43,14 +44,21 @@ export default async function DashboardPage() {
             {/* Main Grid */}
             <div className="flex-1 flex flex-col gap-4 min-h-0">
                 <div className="flex-1 grid grid-cols-12 gap-4 min-h-0">
-                    {/* Chart Area */}
-                    <div className="col-span-12 lg:col-span-9 bg-gray-900/30 border border-gray-800 rounded-xl p-4 flex flex-col">
+                    {/* Chart Area (Center) */}
+                    <div className="col-span-12 lg:col-span-9 bg-slate-900/50 border border-slate-800 rounded-xl p-4 flex flex-col shadow-inner">
                         <TradingChart data={chartData} />
                     </div>
 
-                    {/* Order Book / Execute */}
-                    <div className="col-span-12 lg:col-span-3 flex flex-col gap-4">
-                        <OrderForm />
+                    {/* Right Sidebar: Watchlist & Order Book */}
+                    <div className="col-span-12 lg:col-span-3 flex flex-col gap-4 min-h-0">
+                        {/* Watchlist takes remaining space */}
+                        <div className="flex-1 min-h-0">
+                            <Watchlist />
+                        </div>
+                        {/* Order Form fixed height */}
+                        <div className="flex-shrink-0">
+                            <OrderForm />
+                        </div>
                     </div>
                 </div>
 

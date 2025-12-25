@@ -23,7 +23,7 @@ export default async function DashboardLayout({
             <aside className="w-64 border-r border-gray-800 bg-black/20 hidden md:flex flex-col">
                 <div className="p-6">
                     <Link href="/" className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
-                        Volex<span className="text-profit">Trade</span>
+                        Chart<span className="text-profit">Flow</span>
                     </Link>
                 </div>
 

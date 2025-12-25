@@ -44,7 +44,7 @@ export default function Preloader() {
                         className="mb-8 text-center"
                     >
                         <h1 className="text-5xl font-bold tracking-tighter sm:text-7xl bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
-                            Volex<span className="text-profit">Trade</span>
+                            Chart<span className="text-profit">Flow</span>
                         </h1>
                     </motion.div>
 
