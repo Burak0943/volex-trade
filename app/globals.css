@@ -10,21 +10,15 @@
 }
 
 :root {
-  --background: #020617;
-  /* slate-950 */
-  --foreground: #f8fafc;
-  /* slate-50 */
+  --background: #ffffff;
+  --foreground: #020617;
   --profit: #10b981;
-  /* emerald-500 */
   --loss: #ef4444;
-  /* red-500 */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #020617;
-    --foreground: #f8fafc;
-  }
+[data-theme="dark"] {
+  --background: #020617;
+  --foreground: #f8fafc;
 }
 
 body {
