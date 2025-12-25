@@ -2,6 +2,8 @@ import { createClient } from "@/utils/supabase/server";
 import TradingChart from "@/components/dashboard/TradingChart";
 import OrderForm from "@/components/dashboard/OrderForm";
 import PositionsTable from "@/components/dashboard/PositionsTable";
+import TradeHistory from "@/components/dashboard/TradeHistory";
+import BottomPanel from "@/components/dashboard/BottomPanel";
 import { generateCandleData } from "@/utils/marketData";
 
 export default async function DashboardPage() {
@@ -52,9 +54,12 @@ export default async function DashboardPage() {
                     </div>
                 </div>
 
-                {/* Positions Table */}
+                {/* Bottom Panel (Positions & History) */}
                 <div className="h-64 flex-shrink-0">
-                    <PositionsTable />
+                    <BottomPanel
+                        positions={<PositionsTable />}
+                        history={<TradeHistory />}
+                    />
                 </div>
             </div>
         </div>
