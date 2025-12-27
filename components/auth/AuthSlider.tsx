@@ -16,23 +16,24 @@ export default function AuthSlider() {
 
     async function handleLogin(formData: FormData) {
         setIsLoading(true);
-        const result = await login(formData); // result: undefined (redirect) or { error }
-
+        const result = await login(formData);
         if (result?.error) {
             toast.error(result.error);
             setIsLoading(false);
-        } else {
-            // Redirect handled server-side, but strictly speaking we might want client redirect if we returned success json
-            // Since actions.ts uses redirect() on success, this code might not run if redirect happens immediately.
-            // However, separating concerns: let's verify if actions.ts redirect throws 'NEXT_REDIRECT' error that we need to catch?
-            // Actually, server actions that redirect don't return to client code unless we catch. 
-            // But let's rely on standard Next.js behavior.
         }
     }
 
     async function handleSignup(formData: FormData) {
         if (!acceptedTerms) {
             toast.error("You must agree to the Terms and Privacy Policy.");
+            return;
+        }
+
+        const password = formData.get("password");
+        const confirmPassword = formData.get("confirmPassword");
+
+        if (password !== confirmPassword) {
+            toast.error("Passwords do not match.");
             return;
         }
 
@@ -46,33 +47,39 @@ export default function AuthSlider() {
     }
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-[#020617] text-white p-4">
-            <div className="relative overflow-hidden w-full max-w-4xl h-[600px] bg-slate-900/50 rounded-2xl shadow-2xl border border-slate-800">
+        <div className="flex items-center justify-center min-h-screen bg-[#000000] text-white p-4">
+            <div className="relative overflow-hidden w-full max-w-4xl h-[600px] bg-[#0a0a0a] rounded-3xl shadow-2xl border border-white/5">
 
-                {/* Sign Up Form Container */}
-                <div className={`absolute top-0 h-full w-1/2 transition-all duration-500 ease-in-out z-10 ${isRightPanelActive ? "translate-x-full opacity-100" : "opacity-0 z-0"}`}>
-                    <form action={handleSignup} className="flex flex-col items-center justify-center h-full px-12 text-center bg-[#020617]">
-                        <h1 className="text-3xl font-bold mb-6">Create Account</h1>
-                        <div className="w-full space-y-4">
-                            <Input name="email" type="email" placeholder="Email" required className="bg-slate-800/50 border-slate-700 focus:border-profit" />
-                            <Input name="password" type="password" placeholder="Password" required className="bg-slate-800/50 border-slate-700 focus:border-profit" />
+                {/* Sign Up Form Container (Right Side) */}
+                <div
+                    className={`absolute top-0 left-0 h-full w-1/2 transition-all duration-500 ease-in-out flex flex-col items-center justify-center
+                    ${isRightPanelActive ? "translate-x-full opacity-100 z-20 pointer-events-auto" : "opacity-0 z-0 pointer-events-none"}
+                    `}
+                >
+                    <form action={handleSignup} className="flex flex-col items-center justify-center h-full w-full px-12 text-center">
+                        <h1 className="text-3xl font-bold mb-6 text-white">Create Account</h1>
+                        <div className="w-full space-y-3">
+                            <Input name="username" type="text" placeholder="Username" required className="bg-white/5 border-white/10 focus:border-profit placeholder:text-gray-500 text-white" />
+                            <Input name="email" type="email" placeholder="Email" required className="bg-white/5 border-white/10 focus:border-profit placeholder:text-gray-500 text-white" />
+                            <Input name="password" type="password" placeholder="Password" required className="bg-white/5 border-white/10 focus:border-profit placeholder:text-gray-500 text-white" />
+                            <Input name="confirmPassword" type="password" placeholder="Confirm Password" required className="bg-white/5 border-white/10 focus:border-profit placeholder:text-gray-500 text-white" />
 
-                            <div className="flex items-center gap-2 text-xs text-left w-full pl-1">
+                            <div className="flex items-center gap-2 text-xs text-left w-full pl-1 mt-2">
                                 <input
                                     type="checkbox"
                                     id="terms"
                                     checked={acceptedTerms}
                                     onChange={(e) => setAcceptedTerms(e.target.checked)}
-                                    className="rounded border-slate-700 bg-slate-800 text-profit focus:ring-profit accent-profit h-4 w-4 cursor-pointer"
+                                    className="rounded border-white/20 bg-white/5 text-profit focus:ring-profit accent-profit h-4 w-4 cursor-pointer"
                                 />
-                                <label htmlFor="terms" className="text-slate-400 cursor-pointer select-none">
-                                    I agree to the <Link href="/terms" className="underline hover:text-white">Terms</Link> and <Link href="/privacy" className="underline hover:text-white">Privacy Policy</Link>
+                                <label htmlFor="terms" className="text-gray-400 cursor-pointer select-none">
+                                    I agree to the <Link href="/terms" className="underline hover:text-profit">Terms</Link> and <Link href="/privacy" className="underline hover:text-profit">Privacy Policy</Link>
                                 </label>
                             </div>
 
                             <Button
                                 disabled={isLoading || !acceptedTerms}
-                                className="w-full bg-profit text-slate-950 hover:bg-profit/90 font-bold transition-transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="w-full bg-profit text-black hover:bg-profit/90 font-bold h-10 mt-4"
                             >
                                 {isLoading ? "Creating..." : "Sign Up"}
                             </Button>
@@ -80,50 +87,55 @@ export default function AuthSlider() {
                     </form>
                 </div>
 
-                {/* Sign In Form Container */}
-                <div className={`absolute top-0 left-0 h-full w-1/2 transition-all duration-500 ease-in-out z-20 ${isRightPanelActive ? "translate-x-[100%] opacity-0" : "translate-x-0 opacity-100"}`}>
-                    <form action={handleLogin} className="flex flex-col items-center justify-center h-full px-12 text-center bg-[#020617]">
-                        <h1 className="text-3xl font-bold mb-6">ChartFlow</h1>
+                {/* Sign In Form Container (Left Side) */}
+                <div
+                    className={`absolute top-0 left-0 h-full w-1/2 transition-all duration-500 ease-in-out flex flex-col items-center justify-center
+                 ${isRightPanelActive ? "translate-x-[100%] opacity-0 z-0 pointer-events-none" : "translate-x-0 opacity-100 z-20 pointer-events-auto"}
+                 `}
+                >
+                    <form action={handleLogin} className="flex flex-col items-center justify-center h-full w-full px-12 text-center">
+                        <div className="mb-6 flex flex-col items-center">
+                            <div className="w-10 h-10 bg-profit rounded-lg flex items-center justify-center font-bold text-black text-xl mb-2">V</div>
+                            <h1 className="text-3xl font-bold text-white">Welcome Back</h1>
+                        </div>
+
                         <div className="w-full space-y-4">
-                            <Input name="email" type="email" placeholder="Email" required className="bg-slate-800/50 border-slate-700 focus:border-profit" />
-                            <Input name="password" type="password" placeholder="Password" required className="bg-slate-800/50 border-slate-700 focus:border-profit" />
-                            <Button disabled={isLoading} className="w-full bg-profit text-slate-950 hover:bg-profit/90 font-bold transition-transform active:scale-95">
+                            <Input name="email" type="email" placeholder="Email" required className="bg-white/5 border-white/10 focus:border-profit placeholder:text-gray-500 text-white" />
+                            <Input name="password" type="password" placeholder="Password" required className="bg-white/5 border-white/10 focus:border-profit placeholder:text-gray-500 text-white" />
+                            <Button disabled={isLoading} className="w-full bg-profit text-black hover:bg-profit/90 font-bold h-10">
                                 {isLoading ? "Signing In..." : "Sign In"}
                             </Button>
                         </div>
-                        <Link href="/forgot-password" className="mt-4 text-sm text-slate-400 hover:text-white transition-colors">Forgot your password?</Link>
-
-                        <div className="mt-8 pt-4 border-t border-slate-800 w-full">
-                            <p className="text-xs text-slate-500">
-                                Need help? <a href="mailto:autostephelp@gmail.com" className="hover:text-profit transition-colors">autostephelp@gmail.com</a>
-                            </p>
-                        </div>
+                        <Link href="/forgot-password" className="mt-4 text-sm text-gray-400 hover:text-profit transition-colors">Forgot your password?</Link>
                     </form>
                 </div>
 
                 {/* Overlay Container */}
                 <div className={`absolute top-0 left-1/2 w-1/2 h-full overflow-hidden transition-transform duration-500 ease-in-out z-50 ${isRightPanelActive ? "-translate-x-full" : "translate-x-0"}`}>
-                    <div className={`relative -left-full h-full w-[200%] bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 transform transition-transform duration-500 ease-in-out ${isRightPanelActive ? "translate-x-1/2" : "translate-x-0"}`}>
+                    <div className={`relative -left-full h-full w-[200%] bg-[#111] transform transition-transform duration-500 ease-in-out ${isRightPanelActive ? "translate-x-1/2" : "translate-x-0"}`}>
 
-                        {/* Overlay Left */}
+                        {/* Overlay Pattern / Decoration */}
+                        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-profit/40 via-[#0a0a0a] to-[#0a0a0a]"></div>
+
+                        {/* Overlay Left (Visible when RightPanel is Active) */}
                         <div className={`absolute flex flex-col items-center justify-center w-1/2 h-full px-12 text-center transition-transform duration-500 ease-in-out ${isRightPanelActive ? "translate-x-0" : "-translate-x-[20%]"}`}>
-                            <h1 className="text-3xl font-bold mb-4">Welcome Back!</h1>
-                            <p className="mb-8 text-slate-100">Access your professional trading terminal.</p>
+                            <h1 className="text-3xl font-bold mb-4 text-white">Already a trader?</h1>
+                            <p className="mb-8 text-gray-400">Log in to your terminal and manage your portfolio.</p>
                             <button
                                 onClick={() => setIsRightPanelActive(false)}
-                                className="px-8 py-3 bg-transparent border-2 border-white rounded-full font-bold uppercase text-xs tracking-wider transition-transform active:scale-95 hover:bg-white/10"
+                                className="px-8 py-3 bg-transparent border border-white/20 rounded-full font-bold uppercase text-xs tracking-wider transition-all hover:bg-white hover:text-black hover:border-white"
                             >
                                 Sign In
                             </button>
                         </div>
 
-                        {/* Overlay Right */}
+                        {/* Overlay Right (Visible when RightPanel is Inactive/Default) */}
                         <div className={`absolute right-0 flex flex-col items-center justify-center w-1/2 h-full px-12 text-center transition-transform duration-500 ease-in-out ${isRightPanelActive ? "translate-x-[20%]" : "translate-x-0"}`}>
-                            <h1 className="text-3xl font-bold mb-4">Join ChartFlow</h1>
-                            <p className="mb-8 text-slate-100">Start your journey with advanced market analytics.</p>
+                            <h1 className="text-3xl font-bold mb-4 text-white">New here?</h1>
+                            <p className="mb-8 text-gray-400">Join 2M+ traders on the world's most advanced interface.</p>
                             <button
                                 onClick={() => setIsRightPanelActive(true)}
-                                className="px-8 py-3 bg-transparent border-2 border-white rounded-full font-bold uppercase text-xs tracking-wider transition-transform active:scale-95 hover:bg-white/10"
+                                className="px-8 py-3 bg-transparent border border-white/20 rounded-full font-bold uppercase text-xs tracking-wider transition-all hover:bg-white hover:text-black hover:border-white"
                             >
                                 Sign Up
                             </button>
@@ -136,3 +148,4 @@ export default function AuthSlider() {
         </div>
     );
 }
+

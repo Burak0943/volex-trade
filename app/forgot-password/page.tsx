@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { toast } from "sonner";
+import { resetPassword } from "@/app/auth/actions";
 
 export default function ForgotPasswordPage() {
     const [isLoading, setIsLoading] = useState(false);
@@ -14,11 +15,15 @@ export default function ForgotPasswordPage() {
         e.preventDefault();
         setIsLoading(true);
 
-        // Mock API call
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        const formData = new FormData(e.currentTarget);
+        const result = await resetPassword(formData);
 
-        setIsSent(true);
-        toast.success("Reset link sent!");
+        if (result?.error) {
+            toast.error(result.error);
+        } else {
+            setIsSent(true);
+            toast.success("Reset link sent!");
+        }
         setIsLoading(false);
     }
 
@@ -38,6 +43,7 @@ export default function ForgotPasswordPage() {
                                 <label htmlFor="email" className="text-sm font-medium text-slate-200">Email Address</label>
                                 <Input
                                     id="email"
+                                    name="email"
                                     type="email"
                                     required
                                     placeholder="m@example.com"

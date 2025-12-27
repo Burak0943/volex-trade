@@ -1,128 +1,155 @@
 import Link from "next/link";
 import { ModeToggle } from "@/components/theme-toggle";
-import { generateCandleData } from "@/utils/marketData";
-import TradingChart from "@/components/dashboard/TradingChart";
-import Watchlist from "@/components/dashboard/Watchlist";
-import OrderForm from "@/components/dashboard/OrderForm";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
-  const chartData = generateCandleData(300);
-
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors duration-300">
+    <div className="min-h-screen bg-[#0a0a0a] text-white selection:bg-profit selection:text-black">
       {/* Navbar */}
-      <header className="fixed w-full z-40 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <img src="/logo.jpg" alt="ChartFlow Logo" className="w-8 h-8 rounded-lg" />
-            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-foreground to-slate-500">
-              Chart<span className="text-profit">Flow</span>
-            </span>
+      <nav className="fixed w-full z-50 bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-white/5">
+        <div className="container mx-auto px-6 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-10">
+            {/* Logo */}
+            <div className="flex items-center gap-2 cursor-pointer">
+              <div className="w-8 h-8 bg-profit rounded-lg flex items-center justify-center font-bold text-black">V</div>
+              <span className="text-xl font-bold tracking-tight">Volex<span className="text-profit">Trade</span></span>
+            </div>
+
+            {/* Nav Links */}
+            <div className="hidden md:flex items-center gap-6">
+              <Link href="/trade" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Markets</Link>
+              <Link href="/trade" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Spot</Link>
+              <Link href="/trade" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Futures</Link>
+            </div>
           </div>
 
           <div className="flex items-center gap-4">
-            <Link href="/privacy" className="text-sm font-medium hover:text-profit transition-colors hidden md:block">Privacy</Link>
-            <Link href="/terms" className="text-sm font-medium hover:text-profit transition-colors hidden md:block">Terms</Link>
-            <ModeToggle />
-            <Link href="/login">
-              <button className="px-4 py-2 text-sm font-medium transition-colors hover:text-profit">
-                Log In
-              </button>
-            </Link>
-            <Link href="/login">
-              <button className="px-4 py-2 text-sm font-bold bg-profit text-slate-950 rounded-lg hover:bg-profit/90 transition-transform active:scale-95">
+            <Link href="/login" className="text-sm font-medium text-white hover:text-profit transition-colors">Log In</Link>
+            <Link href="/signup">
+              <Button className="bg-profit hover:bg-profit/90 text-black font-bold h-9 px-6 rounded-full transition-transform active:scale-95">
                 Sign Up
-              </button>
+              </Button>
             </Link>
           </div>
         </div>
-      </header>
+      </nav>
 
-      {/* Hero Section / Trading Interface Preview */}
-      <main className="flex-1 pt-20 pb-10 px-4 flex flex-col gap-6 container mx-auto">
+      <main className="pt-32 pb-20">
 
-        {/* Hero Text */}
-        <section className="text-center py-10 space-y-4">
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tighter">
-            Trade Global Markets with <span className="text-profit">Confidence</span>
+        {/* Hero Section */}
+        <section className="container mx-auto px-6 mb-24 text-center">
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-[1.1]">
+            Trade Crypto & Forex <br />
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-profit to-emerald-400">With Zero Latency</span>
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Advanced charting, real-time execution, and professional tools for everyone.
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-10">
+            The world's most advanced terminal provider. Deep liquidity, professional tools, and bank-grade security for serious traders.
           </p>
+          <div className="flex items-center justify-center gap-4">
+            <Link href="/trade">
+              <Button className="h-12 px-8 text-lg bg-profit text-black hover:bg-profit/90 rounded-full font-bold shadow-[0_0_20px_rgba(46,213,115,0.3)]">
+                Start Trading Now
+              </Button>
+            </Link>
+          </div>
+
+          {/* Hero Stats */}
+          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto border-t border-white/10 pt-8">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-white mb-1">2M+</div>
+              <div className="text-sm text-gray-500 uppercase tracking-wider">Users</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-white mb-1">$50B+</div>
+              <div className="text-sm text-gray-500 uppercase tracking-wider">Q Vol</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-white mb-1">&lt;50ms</div>
+              <div className="text-sm text-gray-500 uppercase tracking-wider">Latency</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-white mb-1">24/7</div>
+              <div className="text-sm text-gray-500 uppercase tracking-wider">Support</div>
+            </div>
+          </div>
         </section>
 
-        {/* Live Interface Preview Grid */}
-        <div className="grid grid-cols-12 gap-4 h-[600px] w-full border border-border rounded-xl bg-card shadow-2xl overflow-hidden p-2 ring-1 ring-border/50">
-
-          {/* Left: Watchlist */}
-          <div className="col-span-12 md:col-span-3 lg:col-span-2 hidden md:block h-full overflow-hidden rounded-lg border border-border">
-            <Watchlist />
+        {/* Live Market Ticker */}
+        <section className="mb-24 px-6 overflow-hidden">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-7xl mx-auto">
+            <TickerCard pair="BTC/USDT" price="42,350.20" change="+2.4%" positive />
+            <TickerCard pair="ETH/USDT" price="2,240.15" change="+1.8%" positive />
+            <TickerCard pair="SOL/USDT" price="98.45" change="-0.5%" positive={false} />
+            <TickerCard pair="XAU/USD" price="2,035.80" change="+0.1%" positive />
           </div>
+        </section>
 
-          {/* Center: Chart */}
-          <div className="col-span-12 md:col-span-9 lg:col-span-7 h-full rounded-lg border border-border bg-card overflow-hidden">
-            <div className="h-full w-full">
-              <TradingChart data={chartData} />
-            </div>
+        {/* Features Grid */}
+        <section className="container mx-auto px-6 mb-24">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <FeatureCard
+              title="Professional Charts"
+              desc="Powered by advanced engines for precise technical analysis."
+              icon="📊"
+            />
+            <FeatureCard
+              title="Bank-Grade Security"
+              desc="Your assets are protected by industry-leading encryption protocols."
+              icon="🛡️"
+            />
+            <FeatureCard
+              title="Global Markets"
+              desc="Access crypto, forex, and commodities from a single unified terminal."
+              icon="🌍"
+            />
           </div>
+        </section>
 
-          {/* Right: Order Panel */}
-          <div className="col-span-12 lg:col-span-3 hidden lg:block h-full rounded-lg border border-border bg-card p-4">
-            <div className="h-full flex flex-col">
-              <div className="font-bold text-lg mb-4">Place Order</div>
-              <OrderForm />
-              <div className="mt-auto p-4 bg-muted/20 rounded-lg text-xs text-muted-foreground text-center">
-                Login to execute trades on the live market.
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        {/* Feature Highlights (Pseudo Recent Trades / Activity) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
-          <FeatureCard
-            title="Real-Time Data"
-            desc="blazing fast updates via WebSocket connection."
-            icon="⚡"
-          />
-          <FeatureCard
-            title="Secure Wallets"
-            desc="Bank-grade security for your digital assets."
-            icon="🔒"
-          />
-          <FeatureCard
-            title="24/7 Support"
-            desc="Dedicated team ready to help you anytime."
-            icon="🎧"
-          />
-        </div>
+        {/* Call to Action */}
+        <section className="container mx-auto px-6 text-center py-20 bg-[#111111] rounded-3xl border border-white/5 mx-4">
+          <h2 className="text-3xl md:text-5xl font-bold mb-6">Ready to start trading?</h2>
+          <p className="text-gray-400 mb-8 max-w-xl mx-auto">Be part of the financial revolution. Create an account in minutes.</p>
+          <Link href="/signup">
+            <Button className="h-12 px-10 bg-white text-black hover:bg-gray-200 rounded-full font-bold">
+              Create Free Account
+            </Button>
+          </Link>
+        </section>
 
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-card/50 py-8">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-sm text-muted-foreground">
-            &copy; 2025 ChartFlow. All rights reserved. <br />
-            Support: <a href="mailto:autostephelp@gmail.com" className="text-profit hover:underline">autostephelp@gmail.com</a>
-          </p>
-          <div className="flex justify-center gap-4 mt-4">
-            <Link href="/privacy" className="text-xs text-muted-foreground hover:text-foreground">Privacy Policy</Link>
-            <Link href="/terms" className="text-xs text-muted-foreground hover:text-foreground">Terms of Service</Link>
-          </div>
+      <footer className="border-t border-white/5 py-12 bg-[#050505] text-sm text-gray-500">
+        <div className="container mx-auto px-6 text-center">
+          <p>&copy; 2025 Volex Trade. All rights reserved.</p>
         </div>
       </footer>
     </div>
   );
 }
 
+function TickerCard({ pair, price, change, positive }: { pair: string, price: string, change: string, positive: boolean }) {
+  return (
+    <Link href="/trade">
+      <div className="bg-[#111111] border border-white/5 p-4 rounded-xl hover:border-white/10 transition-colors cursor-pointer group">
+        <div className="flex justify-between items-center mb-2">
+          <span className="font-bold text-gray-200 group-hover:text-profit transition-colors">{pair}</span>
+          <span className={`text-xs font-medium px-2 py-1 rounded ${positive ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>
+            {change}
+          </span>
+        </div>
+        <div className="text-2xl font-bold text-white">{price}</div>
+      </div>
+    </Link>
+  )
+}
+
 function FeatureCard({ title, desc, icon }: { title: string, desc: string, icon: string }) {
   return (
-    <div className="p-6 rounded-xl border border-border bg-card hover:border-profit/50 transition-colors">
-      <div className="text-4xl mb-4">{icon}</div>
-      <h3 className="font-bold text-xl mb-2">{title}</h3>
-      <p className="text-muted-foreground">{desc}</p>
+    <div className="p-8 rounded-2xl bg-[#111111] border border-white/5 hover:border-profit/30 transition-all hover:translate-y-[-4px]">
+      <div className="text-4xl mb-6">{icon}</div>
+      <h3 className="text-xl font-bold text-white mb-3">{title}</h3>
+      <p className="text-gray-400 leading-relaxed">{desc}</p>
     </div>
   )
 }
