@@ -1,25 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
-import Preloader from "@/components/ui/Preloader";
 import { ThemeProvider } from "@/components/theme-provider";
-import { AuthProvider } from "@/components/auth/AuthContext";
+import Navbar from "@/components/Navbar";
+import { AuthProvider } from "@/context/AuthContext";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ChartFlow - Professional Trading",
-  description: "Advanced trading platform for global markets.",
+  title: "ChartFlow | Professional Trading Terminal",
+  description: "Advanced crypto & forex trading platform with zero latency.",
   icons: {
-    icon: "/logo.jpg",
+    icon: "/favicon.ico", // Ensure you have uploaded the logo as favicon.ico or update this path
   },
 };
 
@@ -30,17 +22,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={inter.className}>
         <ThemeProvider
-          attribute="data-theme"
+          attribute="class"
           defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
           <AuthProvider>
-            {children}
+            <Navbar />
+            <main className="min-h-screen bg-background">
+              {children}
+            </main>
           </AuthProvider>
         </ThemeProvider>
       </body>
