@@ -1,4 +1,3 @@
-"use client";
 
 import { generateCandleData } from "@/utils/marketData";
 import TradingChart from "@/components/dashboard/TradingChart";
