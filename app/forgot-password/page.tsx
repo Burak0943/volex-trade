@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { toast } from "sonner";
-import { resetPassword } from "@/app/auth/actions";
+import { createClient } from "@/utils/supabase/client";
 
 export default function ForgotPasswordPage() {
     const [isLoading, setIsLoading] = useState(false);
@@ -16,10 +16,15 @@ export default function ForgotPasswordPage() {
         setIsLoading(true);
 
         const formData = new FormData(e.currentTarget);
-        const result = await resetPassword(formData);
+        const email = formData.get("email") as string;
 
-        if (result?.error) {
-            toast.error(result.error);
+        const supabase = createClient();
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: `${window.location.origin}/auth/callback?next=/dashboard/settings`,
+        });
+
+        if (error) {
+            toast.error(error.message);
         } else {
             setIsSent(true);
             toast.success("Reset link sent!");

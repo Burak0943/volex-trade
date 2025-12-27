@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { login, signup } from "@/app/auth/actions";
+import { createClient } from "@/utils/supabase/client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -14,23 +14,40 @@ export default function AuthSlider() {
     const [acceptedTerms, setAcceptedTerms] = useState(false);
     const router = useRouter();
 
-    async function handleLogin(formData: FormData) {
+    async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
         setIsLoading(true);
-        const result = await login(formData);
-        if (result?.error) {
-            toast.error(result.error);
+
+        const formData = new FormData(e.currentTarget);
+        const email = formData.get("email") as string;
+        const password = formData.get("password") as string;
+
+        const supabase = createClient();
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+        if (error) {
+            toast.error(error.message);
             setIsLoading(false);
+        } else {
+            toast.success("Welcome back!");
+            router.push("/trade");
+            router.refresh();
         }
     }
 
-    async function handleSignup(formData: FormData) {
+    async function handleSignup(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+
         if (!acceptedTerms) {
             toast.error("You must agree to the Terms and Privacy Policy.");
             return;
         }
 
-        const password = formData.get("password");
-        const confirmPassword = formData.get("confirmPassword");
+        const formData = new FormData(e.currentTarget);
+        const email = formData.get("email") as string;
+        const password = formData.get("password") as string;
+        const confirmPassword = formData.get("confirmPassword") as string;
+        const username = formData.get("username") as string;
 
         if (password !== confirmPassword) {
             toast.error("Passwords do not match.");
@@ -38,11 +55,37 @@ export default function AuthSlider() {
         }
 
         setIsLoading(true);
-        const result = await signup(formData);
 
-        if (result?.error) {
-            toast.error(result.error);
+        const supabase = createClient();
+
+        // Check if username exists
+        const { data: existingUser } = await supabase
+            .from('profiles')
+            .select('username')
+            .eq('username', username)
+            .single();
+
+        if (existingUser) {
+            toast.error("Username is already taken.");
             setIsLoading(false);
+            return;
+        }
+
+        const { error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+                data: { username },
+            },
+        });
+
+        if (error) {
+            toast.error(error.message);
+            setIsLoading(false);
+        } else {
+            toast.success("Account created! Redirecting...");
+            router.push("/trade");
+            router.refresh();
         }
     }
 
@@ -56,7 +99,7 @@ export default function AuthSlider() {
                     ${isRightPanelActive ? "translate-x-full opacity-100 z-20 pointer-events-auto" : "opacity-0 z-0 pointer-events-none"}
                     `}
                 >
-                    <form action={handleSignup} className="flex flex-col items-center justify-center h-full w-full px-12 text-center">
+                    <form onSubmit={handleSignup} className="flex flex-col items-center justify-center h-full w-full px-12 text-center">
                         <h1 className="text-3xl font-bold mb-6 text-white">Create Account</h1>
                         <div className="w-full space-y-3">
                             <Input name="username" type="text" placeholder="Username" required className="bg-white/5 border-white/10 focus:border-profit placeholder:text-gray-500 text-white" />
@@ -78,6 +121,7 @@ export default function AuthSlider() {
                             </div>
 
                             <Button
+                                type="submit"
                                 disabled={isLoading || !acceptedTerms}
                                 className="w-full bg-profit text-black hover:bg-profit/90 font-bold h-10 mt-4"
                             >
@@ -93,7 +137,7 @@ export default function AuthSlider() {
                  ${isRightPanelActive ? "translate-x-[100%] opacity-0 z-0 pointer-events-none" : "translate-x-0 opacity-100 z-20 pointer-events-auto"}
                  `}
                 >
-                    <form action={handleLogin} className="flex flex-col items-center justify-center h-full w-full px-12 text-center">
+                    <form onSubmit={handleLogin} className="flex flex-col items-center justify-center h-full w-full px-12 text-center">
                         <div className="mb-6 flex flex-col items-center">
                             <div className="w-10 h-10 bg-profit rounded-lg flex items-center justify-center font-bold text-black text-xl mb-2">V</div>
                             <h1 className="text-3xl font-bold text-white">Welcome Back</h1>
@@ -102,7 +146,7 @@ export default function AuthSlider() {
                         <div className="w-full space-y-4">
                             <Input name="email" type="email" placeholder="Email" required className="bg-white/5 border-white/10 focus:border-profit placeholder:text-gray-500 text-white" />
                             <Input name="password" type="password" placeholder="Password" required className="bg-white/5 border-white/10 focus:border-profit placeholder:text-gray-500 text-white" />
-                            <Button disabled={isLoading} className="w-full bg-profit text-black hover:bg-profit/90 font-bold h-10">
+                            <Button type="submit" disabled={isLoading} className="w-full bg-profit text-black hover:bg-profit/90 font-bold h-10">
                                 {isLoading ? "Signing In..." : "Sign In"}
                             </Button>
                         </div>

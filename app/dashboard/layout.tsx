@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
-import { signOut } from "@/app/auth/actions";
 import DashboardToaster from "@/components/dashboard/Toaster";
+import SignOutButton from "@/components/dashboard/SignOutButton";
 
 export default async function DashboardLayout({
     children,
@@ -43,11 +43,7 @@ export default async function DashboardLayout({
                             <p className="text-sm font-medium truncate w-32" title={user.email}>{user.email}</p>
                         </div>
                     </div>
-                    <form action={signOut}>
-                        <button className="flex items-center gap-2 w-full px-4 py-2 hover:bg-loss/10 text-loss hover:text-loss rounded-lg transition-colors text-sm">
-                            <span>Sign Out</span>
-                        </button>
-                    </form>
+                    <SignOutButton />
                 </div>
             </aside>
 
