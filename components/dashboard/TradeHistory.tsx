@@ -1,7 +1,7 @@
-import { createClient } from "@/utils/supabase/server";
+import { createSERVERClient } from "@/utils/supabase/server";
 
 export default async function TradeHistory() {
-    const supabase = await createClient();
+    const supabase = await createSERVERClient();
     const { data: history } = await supabase
         .from("positions")
         .select("*")

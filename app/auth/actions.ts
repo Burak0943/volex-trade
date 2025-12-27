@@ -4,8 +4,8 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
 export async function login(formData: FormData) {
-    const { createClient } = await import('@/utils/supabase/server')
-    const supabase = await createClient()
+    const { createSERVERClient } = await import('@/utils/supabase/server')
+    const supabase = await createSERVERClient()
     const email = formData.get('email') as string
     const password = formData.get('password') as string
 
@@ -23,8 +23,8 @@ export async function login(formData: FormData) {
 }
 
 export async function signup(formData: FormData) {
-    const { createClient } = await import('@/utils/supabase/server')
-    const supabase = await createClient()
+    const { createSERVERClient } = await import('@/utils/supabase/server')
+    const supabase = await createSERVERClient()
     const email = formData.get('email') as string
     const password = formData.get('password') as string
     const confirmPassword = formData.get('confirmPassword') as string
@@ -64,8 +64,8 @@ export async function signup(formData: FormData) {
 }
 
 export async function resetPassword(formData: FormData) {
-    const { createClient } = await import('@/utils/supabase/server')
-    const supabase = await createClient()
+    const { createSERVERClient } = await import('@/utils/supabase/server')
+    const supabase = await createSERVERClient()
     const email = formData.get('email') as string
 
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
@@ -80,8 +80,8 @@ export async function resetPassword(formData: FormData) {
 }
 
 export async function signOut() {
-    const { createClient } = await import('@/utils/supabase/server')
-    const supabase = await createClient()
+    const { createSERVERClient } = await import('@/utils/supabase/server')
+    const supabase = await createSERVERClient()
     await supabase.auth.signOut()
 
     revalidatePath('/', 'layout')
