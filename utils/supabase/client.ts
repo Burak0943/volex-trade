@@ -1,5 +1,6 @@
 import { createBrowserClient } from '@supabase/ssr'
 
+// DİKKAT: Fonksiyon adı createBROWSERClient oldu
 export function createBROWSERClient() {
     return createBrowserClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
