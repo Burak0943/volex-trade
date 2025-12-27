@@ -1,9 +1,9 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { createClient } from '@/utils/supabase/server'
 
 export async function executeTrade(formData: FormData) {
+    const { createClient } = await import('@/utils/supabase/server')
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
@@ -37,6 +37,7 @@ export async function executeTrade(formData: FormData) {
 }
 
 export async function closePosition(positionId: string, currentPrice: number) {
+    const { createClient } = await import('@/utils/supabase/server')
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
