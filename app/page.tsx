@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ModeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
+import HomeCTA from "@/components/home/HomeCTA";
 
 export default function Home() {
   return (
@@ -11,8 +12,10 @@ export default function Home() {
           <div className="flex items-center gap-10">
             {/* Logo */}
             <div className="flex items-center gap-2 cursor-pointer">
-              <div className="w-8 h-8 bg-profit rounded-lg flex items-center justify-center font-bold text-black">V</div>
-              <span className="text-xl font-bold tracking-tight">Volex<span className="text-profit">Trade</span></span>
+              <div className="w-8 h-8 rounded-lg overflow-hidden">
+                <img src="/logo.jpg" alt="ChartFlow" className="w-full h-full object-cover" />
+              </div>
+              <span className="text-xl font-bold tracking-tight">Chart<span className="text-profit">Flow</span></span>
             </div>
 
             {/* Nav Links */}
@@ -46,11 +49,7 @@ export default function Home() {
             The world's most advanced terminal provider. Deep liquidity, professional tools, and bank-grade security for serious traders.
           </p>
           <div className="flex items-center justify-center gap-4">
-            <Link href="/trade">
-              <Button className="h-12 px-8 text-lg bg-profit text-black hover:bg-profit/90 rounded-full font-bold shadow-[0_0_20px_rgba(46,213,115,0.3)]">
-                Start Trading Now
-              </Button>
-            </Link>
+            <HomeCTA />
           </div>
 
           {/* Hero Stats */}
@@ -121,7 +120,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t border-white/5 py-12 bg-[#050505] text-sm text-gray-500">
         <div className="container mx-auto px-6 text-center">
-          <p>&copy; 2025 Volex Trade. All rights reserved.</p>
+          <p>&copy; 2025 ChartFlow. All rights reserved.</p>
         </div>
       </footer>
     </div>
