@@ -8,7 +8,7 @@ import { AuthProvider } from "@/context/AuthContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ChartFlow | Professional Trading Terminal",
+  title: "ChartFlow",
   description: "Advanced crypto & forex trading platform with zero latency.",
   icons: {
     icon: "/favicon.ico", // Ensure you have uploaded the logo as favicon.ico or update this path

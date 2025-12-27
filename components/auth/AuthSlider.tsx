@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { createClient } from "@/utils/supabase/client";
+import { createBROWSERClient } from "@/utils/supabase/client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -22,7 +22,7 @@ export default function AuthSlider() {
         const email = formData.get("email") as string;
         const password = formData.get("password") as string;
 
-        const supabase = createClient();
+        const supabase = createBROWSERClient();
         const { error } = await supabase.auth.signInWithPassword({ email, password });
 
         if (error) {
@@ -56,7 +56,7 @@ export default function AuthSlider() {
 
         setIsLoading(true);
 
-        const supabase = createClient();
+        const supabase = createBROWSERClient();
 
         // Check if username exists
         const { data: existingUser } = await supabase

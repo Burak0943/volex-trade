@@ -1,6 +1,6 @@
 "use client";
 
-import { createClient } from "@/utils/supabase/client";
+import { createBROWSERClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -8,7 +8,7 @@ export default function SignOutButton() {
     const router = useRouter();
 
     const handleSignOut = async () => {
-        const supabase = createClient();
+        const supabase = createBROWSERClient();
         await supabase.auth.signOut();
         toast.success("Signed out successfully");
         router.push("/");

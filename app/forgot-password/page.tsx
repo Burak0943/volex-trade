@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { toast } from "sonner";
-import { createClient } from "@/utils/supabase/client";
+import { createBROWSERClient } from "@/utils/supabase/client";
 
 export default function ForgotPasswordPage() {
     const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +18,7 @@ export default function ForgotPasswordPage() {
         const formData = new FormData(e.currentTarget);
         const email = formData.get("email") as string;
 
-        const supabase = createClient();
+        const supabase = createBROWSERClient();
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
             redirectTo: `${window.location.origin}/auth/callback?next=/dashboard/settings`,
         });
