@@ -87,22 +87,7 @@ export default function TradePage() {
     </div>
   )
 }
-"use client";
 
-import { generateCandleData } from "@/utils/marketData";
-import TradingChart from "@/components/dashboard/TradingChart";
-import OrderForm from "@/components/dashboard/OrderForm";
-import OrderBook from "@/components/dashboard/OrderBook";
-import MarketPairs from "@/components/dashboard/MarketPairs";
-import RecentTrades from "@/components/dashboard/RecentTrades";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-
-export default function TradePage() {
-    const chartData = generateCandleData(300);
-
-    return (
-        <div className="h-screen bg-[#0b0e11] text-[#eaecef] flex flex-col overflow-hidden font-sans">
             {/* Header */}
             <header className="h-12 bg-[#181a20] border-b border-[#2b3139] flex items-center px-4 justify-between shrink-0">
                 <div className="flex items-center gap-6">
