@@ -1,8 +1,8 @@
-import { createSERVERClient } from "@/utils/supabase/server-client";
+import { createClient } from "@/utils/supabase/server";
 import CloseButton from "@/components/dashboard/CloseButton";
 
 export default async function PositionsTable() {
-    const supabase = await createSERVERClient();
+    const supabase = await createClient();
     const { data: positions } = await supabase
         .from("positions")
         .select("*")

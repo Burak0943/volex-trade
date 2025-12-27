@@ -1,4 +1,4 @@
-import { createSERVERClient } from "@/utils/supabase/server-client";
+import { createClient } from "@/utils/supabase/server";
 import TradingChart from "@/components/dashboard/TradingChart";
 import OrderForm from "@/components/dashboard/OrderForm";
 import PositionsTable from "@/components/dashboard/PositionsTable";
@@ -8,7 +8,7 @@ import Watchlist from "@/components/dashboard/Watchlist";
 import { generateCandleData } from "@/utils/marketData";
 
 export default async function DashboardPage() {
-    const supabase = await createSERVERClient();
+    const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
     // Fetch profile data

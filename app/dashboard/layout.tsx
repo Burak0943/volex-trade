@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { createSERVERClient } from "@/utils/supabase/server-client";
+import { createClient } from "@/utils/supabase/server";
 import { signOut } from "@/app/auth/actions";
 import DashboardToaster from "@/components/dashboard/Toaster";
 
@@ -9,7 +9,7 @@ export default async function DashboardLayout({
 }: {
     children: React.ReactNode;
 }) {
-    const supabase = await createSERVERClient();
+    const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
