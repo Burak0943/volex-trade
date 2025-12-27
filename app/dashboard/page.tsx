@@ -1,25 +1,14 @@
-import { createClient } from "@/utils/supabase/server";
+"use client";
+
 import TradingChart from "@/components/dashboard/TradingChart";
 import OrderForm from "@/components/dashboard/OrderForm";
-import PositionsTable from "@/components/dashboard/PositionsTable";
-import TradeHistory from "@/components/dashboard/TradeHistory";
-import BottomPanel from "@/components/dashboard/BottomPanel";
 import Watchlist from "@/components/dashboard/Watchlist";
 import { generateCandleData } from "@/utils/marketData";
 
-export default async function DashboardPage() {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-
-    // Fetch profile data
-    const { data: profile } = await supabase
-        .from('profiles')
-        .select('balance')
-        .eq('id', user?.id)
-        .single();
-
-    const balance = profile?.balance ?? 10000.00; // Fallback if query fails momentarily
-    const formattedBalance = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(balance));
+export default function DashboardPage() {
+    // Mock data - no database connection
+    const balance = 10000.00;
+    const formattedBalance = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(balance);
 
     // Generate chart data
     const chartData = generateCandleData(300);
@@ -36,7 +25,7 @@ export default async function DashboardPage() {
                     <p className="text-gray-400 text-sm">$48,230.50</p>
                 </div>
                 <div className="text-right">
-                    <p className="text-sm text-gray-400">Available Balance</p>
+                    <p className="text-sm text-gray-400">Available Balance (Demo)</p>
                     <p className="text-xl font-mono font-bold">{formattedBalance}</p>
                 </div>
             </header>
@@ -62,12 +51,9 @@ export default async function DashboardPage() {
                     </div>
                 </div>
 
-                {/* Bottom Panel (Positions & History) */}
-                <div className="h-64 flex-shrink-0">
-                    <BottomPanel
-                        positions={<PositionsTable />}
-                        history={<TradeHistory />}
-                    />
+                {/* Bottom Panel (Positions & History) - Demo Mode */}
+                <div className="h-64 flex-shrink-0 bg-slate-900/50 border border-slate-800 rounded-xl p-4 flex items-center justify-center">
+                    <p className="text-gray-500">Positions & History (Demo Mode - No Database)</p>
                 </div>
             </div>
         </div>

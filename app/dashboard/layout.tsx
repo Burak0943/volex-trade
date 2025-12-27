@@ -1,21 +1,12 @@
-import { redirect } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@/utils/supabase/server";
 import DashboardToaster from "@/components/dashboard/Toaster";
 import SignOutButton from "@/components/dashboard/SignOutButton";
 
-export default async function DashboardLayout({
+export default function DashboardLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (!user) {
-        redirect("/login");
-    }
-
     return (
         <div className="flex h-screen bg-background text-foreground overflow-hidden">
             <DashboardToaster />
@@ -37,10 +28,10 @@ export default async function DashboardLayout({
                 <div className="p-4 border-t border-gray-800">
                     <div className="flex items-center gap-3 w-full px-4 py-2 mb-2">
                         <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-xs">
-                            {user.email?.slice(0, 2).toUpperCase()}
+                            DM
                         </div>
                         <div className="overflow-hidden">
-                            <p className="text-sm font-medium truncate w-32" title={user.email}>{user.email}</p>
+                            <p className="text-sm font-medium truncate w-32">Demo User</p>
                         </div>
                     </div>
                     <SignOutButton />

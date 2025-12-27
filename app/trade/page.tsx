@@ -1,3 +1,4 @@
+"use client";
 
 import { generateCandleData } from "@/utils/marketData";
 import TradingChart from "@/components/dashboard/TradingChart";
@@ -5,7 +6,6 @@ import OrderForm from "@/components/dashboard/OrderForm";
 import OrderBook from "@/components/dashboard/OrderBook";
 import MarketPairs from "@/components/dashboard/MarketPairs";
 import RecentTrades from "@/components/dashboard/RecentTrades";
-import PositionsTable from "@/components/dashboard/PositionsTable";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
@@ -76,9 +76,9 @@ export default function TradePage() {
 
             </main>
 
-            {/* Bottom Panel: Open Orders (Collapsible/Overlay? For now fixed height) */}
-            <div className="h-[200px] bg-[#161a1e] border-t border-[#2b3139] shrink-0">
-                <PositionsTable />
+            {/* Bottom Panel: Mock Positions (No Database) */}
+            <div className="h-[200px] bg-[#161a1e] border-t border-[#2b3139] shrink-0 flex items-center justify-center">
+                <p className="text-gray-500 text-sm">Open Positions (Demo Mode - No Database)</p>
             </div>
         </div>
     );
