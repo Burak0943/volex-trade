@@ -1,7 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
-// DİKKAT: Fonksiyon adı createSERVERClient oldu
 export async function createSERVERClient() {
     const cookieStore = await cookies()
 
@@ -10,16 +9,13 @@ export async function createSERVERClient() {
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
         {
             cookies: {
-                getAll() {
-                    return cookieStore.getAll()
-                },
+                getAll() { return cookieStore.getAll() },
                 setAll(cookiesToSet) {
                     try {
                         cookiesToSet.forEach(({ name, value, options }) =>
                             cookieStore.set(name, value, options)
                         )
-                    } catch {
-                    }
+                    } catch { }
                 },
             },
         }

@@ -1,4 +1,4 @@
-import { createSERVERClient } from "@/utils/supabase/server";
+import { createSERVERClient } from "@/utils/supabase/server-client";
 import CloseButton from "@/components/dashboard/CloseButton";
 
 export default async function PositionsTable() {

@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { createSERVERClient } from "@/utils/supabase/server";
+import { createSERVERClient } from "@/utils/supabase/server-client";
 import { signOut } from "@/app/auth/actions";
 import DashboardToaster from "@/components/dashboard/Toaster";
 

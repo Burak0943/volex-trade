@@ -1,4 +1,4 @@
-import { createSERVERClient } from "@/utils/supabase/server";
+import { createSERVERClient } from "@/utils/supabase/server-client";
 import TradingChart from "@/components/dashboard/TradingChart";
 import OrderForm from "@/components/dashboard/OrderForm";
 import PositionsTable from "@/components/dashboard/PositionsTable";

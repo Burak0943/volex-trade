@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 
 export async function executeTrade(formData: FormData) {
-    const { createSERVERClient } = await import('@/utils/supabase/server')
+    const { createSERVERClient } = await import('@/utils/supabase/server-client')
     const supabase = await createSERVERClient()
     const { data: { user } } = await supabase.auth.getUser()
 
@@ -37,7 +37,7 @@ export async function executeTrade(formData: FormData) {
 }
 
 export async function closePosition(positionId: string, currentPrice: number) {
-    const { createSERVERClient } = await import('@/utils/supabase/server')
+    const { createSERVERClient } = await import('@/utils/supabase/server-client')
     const supabase = await createSERVERClient()
     const { data: { user } } = await supabase.auth.getUser()
 
